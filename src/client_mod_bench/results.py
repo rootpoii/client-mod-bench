@@ -60,8 +60,8 @@ def cpu_model() -> str:
             )
             if out.stdout.strip():
                 return out.stdout.strip()
-    except (OSError, subprocess.SubprocessError):
-        pass
+    except (OSError, ImportError, subprocess.SubprocessError):
+        pass  # the CPU name is nice to have, never worth crashing a run over
     return platform.processor() or "unknown"
 
 
