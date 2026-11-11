@@ -4,9 +4,10 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import mock
 
-from client_mod_bench import runner
+from client_mod_bench import runner, targets
 from client_mod_bench.errors import BenchError
 from client_mod_bench.fmt import MIB
 from client_mod_bench.results import environment_warnings, group_by_label, load_results
@@ -31,7 +32,9 @@ class FakeSquirrelInstall:
         self.root = Path(tempfile.mkdtemp())
         self.patches = [
             mock.patch.dict(os.environ, {"LOCALAPPDATA": str(self.root)}),
-            mock.patch("client_mod_bench.targets.platform.system", return_value="Windows"),
+            # only targets.py gets to think it's on Windows. Patching platform.system itself
+            # also fooled results.cpu_model() into importing winreg on Linux/macOS CI
+            mock.patch.object(targets, "platform", SimpleNamespace(system=lambda: "Windows")),
         ]
 
     def add_build(self, version):
