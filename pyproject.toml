@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "client-mod-bench"
+dynamic = ["version"]
+description = "Reproducible RAM, CPU and startup benchmarks for Discord client mods and Electron chat clients."
+readme = "README.md"
+authors = [{ name = "rootpoi" }]
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = ["psutil>=5.9"]
+keywords = ["discord", "benchmark", "electron", "client-mod", "vencord", "performance", "memory"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: System :: Benchmark",
+]
+
+[project.urls]
+Homepage = "https://github.com/rootpoii/client-mod-bench"
+Issues = "https://github.com/rootpoii/client-mod-bench/issues"
+
+[project.scripts]
+client-mod-bench = "client_mod_bench.cli:main"
+cmbench = "client_mod_bench.cli:main"
+
+[tool.hatch.version]
+path = "src/client_mod_bench/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/client_mod_bench"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B"]
